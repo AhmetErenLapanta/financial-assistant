@@ -1,0 +1,60 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:aiservice}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  application:
+    name: financial-assistant
+  threads:
+    virtual:
+      enabled: true
+  ai:
+    openai:
+      api-key: ${MY_OPENAI_KEY}
+      chat:
+        options:
+          model: gpt-4o
+          #max-tokens: 500
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,hikaricp
+
+app:
+  rag:
+    chunk-size: 1000
+    chunk-overlap: 200
+    min-chunk-length: 20
+    max-chunk-size: 10000
+    keep-separator: true
+    document-pattern: classpath:/rag/*.pdf
+    system-prompt-path: classpath:/prompts/system.st
+
+logging:
+  level:
+    org.springframework.ai: INFO
+    org.springframework.ai.model.tool.autoconfigure: WARN
+    org.springframework.ai.reader.pdf.layout: WARN
+    com.ai.financial_assistant: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"

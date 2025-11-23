@@ -1,0 +1,40 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aiservice
+    username: postgres
+    password: postgres
+  application:
+    name: financial-assistant
+  ai:
+    openai:
+      api-key: ${MY_OPENAI_KEY}
+      chat:
+        options:
+          model: gpt-4o
+          #max-tokens: 500
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,hikaricp
+
+logging:
+  level:
+    org.springframework.ai: DEBUG
+    org.springframework.ai.openai: DEBUG
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG
