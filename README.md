@@ -285,6 +285,8 @@ The application exposes Actuator endpoints for monitoring:
 - **Metrics**: `http://localhost:8080/actuator/metrics`
 - **HikariCP**: `http://localhost:8080/actuator/hikaricp`
 
+Built by [Ahmet Eren Lapanta](https://erenlapanta.com).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
